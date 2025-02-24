@@ -5,26 +5,30 @@ from reflex_test.styles import (
     button_go_position,
 )
 
-def generate_card_pairs(n: int) -> list[rx.Component]:
+def generate_card_pairs() -> list[rx.Component]:
     """Генерация карточек с текстом и иконкой удаления."""
+    notes = ["Текст 1", "Текст 2", "Текст 3", "Текст 4", "Текст 5"]  # Пример заметок
     return [
         rx.hstack(
-            rx.card(
-                rx.hstack(
-                    rx.text(f"Текст {i + 1}", align="left"),
-                    rx.icon("trash", cursor="pointer", margin_left="auto"),
-                    spacing="1",
+            rx.link(  # Оборачиваем карточку в ссылку для редактирования
+                rx.card(
+                    rx.hstack(
+                        rx.text(note, align="left"),
+                        rx.icon("trash", cursor="pointer", margin_left="auto"),
+                        spacing="1",
+                        align_items="center",
+                    ),
+                    padding="1rem",
+                    width="200px",  # Увеличенный размер карточек
+                    height="100px",  # Увеличенная высота карточек
                     align_items="center",
+                    justify_content="space-between"
                 ),
-                padding="1rem",
-                width="200px",  # Увеличенный размер карточек
-                height="100px",  # Увеличенная высота карточек
-                align_items="center",
-                justify_content="space-between"
+                href=f"/edit-note?note_text={note}",  # Переход на страницу редактирования с текстом заметки
             ),
             spacing="2",  # Увеличенное расстояние между карточками
         )
-        for i in range(n)
+        for note in notes
     ]
 
 def create_button(label: str, href: str, style: dict) -> rx.Component:
@@ -46,7 +50,7 @@ def index_page() -> rx.Component:
     """Главная страница с разделением на слои."""
     header = rx.container(
         rx.hstack(
-            rx.color_mode.button(position="top-right"),  # Кнопка смены темы
+            rx.color_mode.button(position="bottom-right"),  # Кнопка смены темы
             spacing="1",
             align_items="center",
         ),
@@ -60,7 +64,7 @@ def index_page() -> rx.Component:
             rx.heading("Your list notes", size="9", align="center"),  # Заголовок по центру
             rx.box(create_button("Go to Home Page", "/home-page", button_go_position), align="center"),  # Кнопка возврата на главную
             rx.box(create_button("Add note", href="#", style=button_add_position)),  # Кнопка добавления заметки
-            *generate_card_pairs(5),
+            *generate_card_pairs(),
             spacing="3",  # Увеличенное расстояние между элементами
             align="center",  # Выровнять текст по центру
             padding_top="20px",  # Уменьшенный отступ сверху для body
@@ -70,19 +74,14 @@ def index_page() -> rx.Component:
     )
 
     footer = rx.container(
-        rx.text("© 2025 My Notes App", size="5", align="center", color="black"),
+        rx.text("© 2025 My Notes App", size="5", align="center", color="Grey"),
         padding="2rem",
-        background="green",
+        background="#1C1C1C",
         height="40px",  # Фиксированная высота для footer
         spacing="5"
     )
 
     return rx.container(header, body, footer)
-
-def save_note() -> None:
-    """Функция для сохранения заметки."""
-    # Здесь можно добавить логику для сохранения заметки
-    # Например, добавить заметку в список и обновить интерфейс
 
 @rx.page(route="/notes", title="My notes")
 def notes_page():
