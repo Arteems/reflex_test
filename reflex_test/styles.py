@@ -7,12 +7,15 @@ heading_place = {
 
 
 button_add_position = {
-    "margin-left": "720px"
+    "position": "relative",
+    "left": "200px",
+    "top": "40px"
+
 
 }
 
 
 
-button_go_position = {"position": "relative", "top": "35px"}
+button_go_position = {"position": "relative", "top": "90px", "right": "250px"}
 
 icon_place = {"position": "top-right", "left": "800px"}
